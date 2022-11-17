@@ -3,7 +3,7 @@
     <form action="" method="POST">
         {{form.hidden_tag()}}
         <fieldset class="form-group">
-            <legend class="border-bottom mb-4"></legend>
+            <legend class="border-bottom mb-4">Reset Password</legend>
             <div class="form-group">
                 {{form.email.label(class="form-control-lable")}} {% if form.email.error %} {{form.email(class="form-control form-control-lg is-invalid")}}
                 <div class="invalid-feedback">
@@ -11,14 +11,6 @@
                     <span>{{error}}</span> {% endfor %}
                 </div>
                 {% else %} {{form.email(class="form-control form-control-lg")}} {% endif %}
-            </div>
-            <div class="form-group">
-                {{form.password.label(class="form-control-lable")}} {% if form.password.error %} {{form.password(class="form-control form-control-lg is-invalid")}}
-                <div class="invalid-feedback">
-                    {% for error in form.password.error %}
-                    <span>{{error}}</span> {% endfor %}
-                </div>
-                {% else %} {{form.password(class="form-control form-control-lg")}} {% endif %}
             </div>
         </fieldset>
         <div class="form-group">

@@ -3,7 +3,7 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect,request,abort
 from blog import app,bcrypt,db
-from blog.forms import RegistrationForm, LoginForm, UpdateAccountForm,PostForm
+from blog.forms import RegistrationForm, LoginForm, UpdateAccountForm,PostForm,RequestResetForm,ResetPasswordForm
 from blog.models import User, Post
 from flask_login import login_user,current_user,logout_user,login_required
 
@@ -12,7 +12,7 @@ from flask_login import login_user,current_user,logout_user,login_required
 def home():
     page= request.args.get('page',1,type=int)
     # posts=Post.query.all()
-    posts=Post.query.paginate(per_page=5)
+    posts=Post.query.paginate(per_page=1)
     return render_template('home.html', posts=posts)
 
 
@@ -148,3 +148,17 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
+
+@app.route("/user/<string:username>")
+def user_post(username):
+    page = request.args.get('page', 1, type=int)
+    user=User.query.filter_by(username=username).first_or_404()
+    post=Post.query.filter_by(author=user).order_by(Post.date_posted.desc()).paginate(page=page,per_page=5)
+    return render_template('user_post.html', posts=post,user=user)
+
+@app.route("/reset/password",methods=['GET','POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for(home))
+    form = RequestResetForm()
+    return render_template('reset_request.html',title='Reset Password',form=form)
