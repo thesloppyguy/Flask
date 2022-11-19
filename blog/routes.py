@@ -12,7 +12,7 @@ from flask_login import login_user,current_user,logout_user,login_required
 def home():
     page= request.args.get('page',1,type=int)
     # posts=Post.query.all()
-    posts=Post.query.paginate(per_page=1)
+    posts=Post.query.paginate(per_page=5)
     return render_template('home.html', posts=posts)
 
 
